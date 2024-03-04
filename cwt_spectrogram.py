@@ -80,7 +80,41 @@ def cwt_spectrogram(x, fs, nNotes=30, detrend=False, normalize=False):
     return power, times, frequencies, coif
 
 
-def spectrogram_plot(z, times, frequencies, coif, cmap, norm, ax, colorbar=True):
+# def spectrogram_plot(z, times, frequencies, coif, cmap, norm, ax, colorbar=True):
+#     ###########################################################################
+#     # plot
+    
+#     # set default colormap, if none specified
+#     if cmap is None:
+#         cmap = get_cmap('Greys')
+#     # or if cmap is a string, get the actual object
+#     elif isinstance(cmap, str):
+#         cmap = get_cmap(cmap)
+
+#     # create the figure if needed
+#     if ax is None:
+#         fig, ax = plt.subplots()
+#     else:
+#         fig = plt.gcf()
+
+#     xx,yy = np.meshgrid(times,frequencies)
+#     ZZ = z
+    
+#     im = ax.pcolor(xx,yy,ZZ, norm=norm, cmap=cmap)
+#     # ax.plot(times,coif)
+#     ax.plot(times)
+#     # ax.fill_between(times,coif, step="mid", alpha=0.4)
+    
+#     if colorbar:
+#         cbaxes = inset_axes(ax, width="2%", height="90%", loc=4) 
+#         fig.colorbar(im,cax=cbaxes, orientation='vertical')
+
+#     ax.set_xlim(times.min(), times.max())
+#     ax.set_ylim(frequencies.min(), frequencies.max())
+
+#     return ax
+
+def spectrogram_plot(z, times, frequencies, coif, cmap, norm, colorbar=True):
     ###########################################################################
     # plot
     
@@ -91,25 +125,25 @@ def spectrogram_plot(z, times, frequencies, coif, cmap, norm, ax, colorbar=True)
     elif isinstance(cmap, str):
         cmap = get_cmap(cmap)
 
-    # create the figure if needed
-    if ax is None:
-        fig, ax = plt.subplots()
-    else:
-        fig = plt.gcf()
+    # create the figure
+    fig, ax = plt.subplots()
 
-    xx,yy = np.meshgrid(times,frequencies)
+    xx, yy = np.meshgrid(times, frequencies)
     ZZ = z
     
-    im = ax.pcolor(xx,yy,ZZ, norm=norm, cmap=cmap)
-    # ax.plot(times,coif)
+    im = ax.pcolor(xx, yy, ZZ, norm=norm, cmap=cmap)
+    # ax.plot(times, coif)
     ax.plot(times)
-    # ax.fill_between(times,coif, step="mid", alpha=0.4)
+    # ax.fill_between(times, coif, step="mid", alpha=0.4)
     
     if colorbar:
         cbaxes = inset_axes(ax, width="2%", height="90%", loc=4) 
-        fig.colorbar(im,cax=cbaxes, orientation='vertical')
+        fig.colorbar(im, cax=cbaxes, orientation='vertical')
 
     ax.set_xlim(times.min(), times.max())
     ax.set_ylim(frequencies.min(), frequencies.max())
 
-    return ax
+    # Hide the axes
+    ax.axis('off')
+
+    return fig
