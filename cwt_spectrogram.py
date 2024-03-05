@@ -145,5 +145,6 @@ def spectrogram_plot(z, times, frequencies, coif, cmap, norm, colorbar=True):
 
     # Hide the axes
     ax.axis('off')
+    
 
     return fig
