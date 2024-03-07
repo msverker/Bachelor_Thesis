@@ -11,8 +11,8 @@ The code is very messy at the moment, but will be fixed during the thesis.
 - [ ] Theory section on thesis
 
 ## To-do list for week 9-10
-- [] Present results to supervisors, get feedback
-- [] Start getting into a deeper understanding of the mVIT
-- [] Start building the architecture of the mVIT
-- [] Get the data (if possible) and understand it
-- [] Keep on working on the theory section
+- [ ] Present results to supervisors, get feedback
+- [ ] Start getting into a deeper understanding of the mVIT
+- [ ] Start building the architecture of the mVIT
+- [ ] Get the data (if possible) and understand it
+- [ ] Keep on working on the theory section
