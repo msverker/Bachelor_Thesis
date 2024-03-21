@@ -8,11 +8,18 @@ The code is very messy at the moment, but will be fixed during the thesis.
 - [x] Setup train and test set
 - [x] Do SVM
 - [x] Start working on simple CNN (VGG-16 perhaps, pretrained and preloaded)
-- [ ] Theory section on thesis
+- [x] Theory section on thesis
 
 ## To-do list for week 9-10
-- [ ] Present results to supervisors, get feedback
-- [ ] Start getting into a deeper understanding of the mVIT
-- [ ] Start building the architecture of the mVIT
-- [ ] Get the data (if possible) and understand it
-- [ ] Keep on working on the theory section
+- [x] Present results to supervisors, get feedback
+- [x] Start getting into a deeper understanding of the mVIT
+- [x] Start building the architecture of the mVIT
+- [x] Get the data (if possible) and understand it
+- [x] Keep on working on the theory section
+
+## To-do list for week 12-14
+- [x] Understand HPC, get it to work
+- [x] all 1235 events from sleep-edf
+- [x] Train data on VGG16
+- [x] Train data on single channel ViT
+- [x] Explore attention map of predictions
