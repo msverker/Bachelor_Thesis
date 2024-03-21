@@ -18,7 +18,7 @@ The code is very messy at the moment, but will be fixed during the thesis.
 - [x] Keep on working on the theory section
 
 ## To-do list for week 12-14
-- [x] Understand HPC, get it to work
+- [x] Understand HPC, make it work
 - [x] all 1235 events from sleep-edf
 - [x] Train data on VGG16
 - [x] Train data on single channel ViT
