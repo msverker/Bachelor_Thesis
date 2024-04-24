@@ -131,5 +131,5 @@ if __name__ == "__main__":
     #os.environ["CUDA_VISIBLE_DEVICES"]= str(0)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  
     print(f"Model will run on {device}")
-    set_seed(seed=1)
+    # set_seed(seed=1)  #set udelukkende seed hvis jeg ønsker at træne fra samme udgangspunkt (vægte starter fra samme sted).
     main()

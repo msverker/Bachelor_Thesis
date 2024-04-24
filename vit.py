@@ -4,8 +4,8 @@ from einops import rearrange, repeat
 from einops.layers.torch import Rearrange
 import torch.nn.functional as F
 
-def positional_encoding_2d(nph, npw, dim, temperature = 10000, dtype=torch.float32):
-    y, x = torch.meshgrid(torch.arange(nph), torch.arange(npw), indexing = "ij")
+def positional_encoding_2d(nph, npw, dim, temperature = 10000, dtype=torch.float32):    #Temp angivet ud fra paper.
+    y, x = torch.meshgrid(torch.arange(nph), torch.arange(npw), indexing = "ij") #opstil matrix, hvor antallet af rækker er patch højde n, og kolonner er patch bredde n. index som i,j matrix. 
     assert (dim % 4) == 0, "feature dimension must be multiple of 4 for sincos emb"
 
     omega = torch.arange(dim // 4) / (dim // 4 - 1)
@@ -38,7 +38,7 @@ class Attention(nn.Module):
         values = self.v_projeciton(x)
 
         # Rearrange keys, queries and values
-        # from batch_size x seq_len x embed_dim to (batch_size x num_head) x seq_len x head_dim
+        # from batch_size x sequence_len x embed_dim to (batch_size x num_head) x seq_len x head_dim
         keys = rearrange(
             keys, "b s (h d) -> (b h) s d", h=self.num_heads, d=self.head_dim
         )
@@ -149,11 +149,11 @@ class ViT(nn.Module):
         # )
         self.to_patch_embedding = nn.Sequential(
             Rearrange(
-                "b c (phn ph) (pwn pw) -> b c phn ph pwn pw",
-                ph=patch_h,
-                pw=patch_w,
-                phn=H//patch_h,
-                pwn=W//patch_w
+                "b c (phn ph) (pwn pw) -> b c phn ph pwn pw", #Har et stort billede 
+                ph=patch_h, #patch højde
+                pw=patch_w, #patch bredde
+                phn=H//patch_h, #antal patches ned langs billede
+                pwn=W//patch_w  #antal patches hen langs billede
             ),
             Rearrange(
                 "b c phn ph pwn pw -> b (phn pwn) (c ph pw)",
@@ -163,8 +163,8 @@ class ViT(nn.Module):
                 pwn=W//patch_w
             ),
             nn.LayerNorm(patch_dim),
-            nn.Linear(patch_dim, embed_dim),
-            nn.LayerNorm(embed_dim),
+            nn.Linear(patch_dim, embed_dim), #embedded patches
+            nn.LayerNorm(embed_dim),    #normalize (transformer encoder step 1)
         )
         #################################
 
@@ -203,8 +203,14 @@ class ViT(nn.Module):
                 )
             )
 
-        self.classifier = nn.Linear(embed_dim, num_classes)
+        hidden_layer = embed_dim//2
+        self.classifier = nn.Sequential(
+            nn.Linear(embed_dim, hidden_layer),
+            nn.functional.relu(),
+            nn.Linear(hidden_layer, num_classes)
+        )
         self.dropout = nn.Dropout(dropout)
+
 
     def forward(self, img):
 
