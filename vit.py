@@ -24,7 +24,7 @@ class Attention(nn.Module):
         ), f"Embedding dimension ({embed_dim}) should be divisible by number of heads ({num_heads})"
         self.num_heads = num_heads
         self.head_dim = embed_dim // num_heads
-        self.scale = self.head_dim**-0.5
+        self.scale = self.head_dim**-0.5 #1 / sqrt(d_k)
 
         self.k_projection = nn.Linear(embed_dim, embed_dim, bias=False)
         self.q_projection = nn.Linear(embed_dim, embed_dim, bias=False)
@@ -48,10 +48,10 @@ class Attention(nn.Module):
         values = rearrange(
             values, "b s (h d) -> (b h) s d", h=self.num_heads, d=self.head_dim
         )
-
+        # T = 2 #Temperature added to equalize weights after softmax later.
         attention_logits = torch.matmul(queries, keys.transpose(1, 2))
         attention_logits = attention_logits * self.scale
-        attention_matrix = F.softmax(attention_logits, dim=-1)
+        attention_matrix = F.softmax(attention_logits, dim=-1) #/ T #apply softmax to change matrix vector product into probability. Depending on temperature, we can define how much weight they each attention element gets.
         out = torch.matmul(attention_matrix, values)
 
         # Rearragne output
@@ -135,18 +135,6 @@ class ViT(nn.Module):
             self.cls_token = nn.Parameter(torch.rand(1, 1, embed_dim))
             num_patches += 1
 
-        # TASK: Implement patch embedding layer
-        #       Convert imaged to patches and project to the embedding dimension
-        # HINT: 1) Use the Rearrange layer from einops.layers.torch
-        #          in the same way you used the rearrange function
-        #          in the image_to_patches function (playground.py)
-        #       2) Stack Rearrange layer with a linear projection layer using nn.Sequential
-        #          Consider including LayerNorm layers before and after the linear projection
-        ######## insert code here ########
-        # self.to_patch_embedding = nn.Sequential(
-        #     Rearrange('b c (ph phn) (pw pwn) -> b (phn pwn) (ph pw c)', ph=patch_h, pw=patch_w),
-        #     nn.Linear(patch_dim, embed_dim)
-        # )
         self.to_patch_embedding = nn.Sequential(
             Rearrange(
                 "b c (phn ph) (pwn pw) -> b c phn ph pwn pw", #Har et stort billede 
@@ -178,19 +166,6 @@ class ViT(nn.Module):
                 npw=W // patch_w,
                 dim=embed_dim,
             )
-
-        # transformer_blocks = []
-        # for i in range(num_layers):
-        #     transformer_blocks.append(
-        #         EncoderBlock(
-        #             embed_dim=embed_dim,
-        #             num_heads=num_heads,
-        #             fc_dim=fc_dim,
-        #             dropout=dropout,
-        #         )
-        #     )
-
-        # self.transformer_blocks = nn.Sequential(*transformer_blocks)
 
         self.transformer_list = nn.ModuleList()
         for i in range(num_layers):
