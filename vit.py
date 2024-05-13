@@ -106,7 +106,7 @@ class ViT(nn.Module):
         pool="cls",
         dropout=0.0,
         fc_dim=None,
-        num_classes=2,
+        num_classes=5,
     ):
 
         super().__init__()

@@ -29,21 +29,9 @@ def cwt_spectrogram(x, fs, nNotes=30, detrend=False, normalize=False):
         stddev = x.std()
         x = x / stddev
 
-    ###########################################################################
-    # Define some parameters of our wavelet analysis. 
-
-    # maximum range of scales that makes sense
-    # min = 2 ... Nyquist frequency
-    # max = np.floor(N/2)
-    #obtain the rule of nyquist, then by multiplying 2 we get 2 nyquist interval of the signal. The log2 gives the number of octaves
-                                                                #(octave means 2:1 frequency scale, either doubling or halving)
-    #nOctaves = np.int64(np.log2(2*np.floor(N/2.0)))
 
     frequencies_for_scale = np.arange(1, 50.0, 1.0 / nNotes) / fs
     
-    #Performs an array of scales from value 1 to n0ctaves with step size 1/nNotes. The power of 2 of each value generates a set of scales. nNotes affects the frequency resolution.
-                                        #The higher nNotes will result in more scales and better frequency resolution, and finer details. 
-    #scales = 2**np.arange(1, nOctaves, 1.0/nNotes)
 
     scales = pywt.frequency2scale('cmor1.5-1.0', frequencies_for_scale)
     
@@ -51,7 +39,7 @@ def cwt_spectrogram(x, fs, nNotes=30, detrend=False, normalize=False):
 
     ###########################################################################
     # cwt and the frequencies used. 
-    # Use the complex morelet with bw=1.5 and center frequency of 1.0
+    # Use the complex morlet with bw=1.5 and center frequency of 1.0
     #Choice of center frequency and bandwith: Center frequency determines the center frequency of the wavelet, 
                         #meaning since we have alpha, beta, gamma etc. we might need to choose different, depending on label.
     #Bandwidth controls the width of the frequency band represented on the wavelet. So, since we have intervals of approx 4 hz or so for some major frequencies, let's try use that.

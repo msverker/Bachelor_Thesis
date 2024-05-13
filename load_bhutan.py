@@ -21,8 +21,6 @@ def plot_to_tensor(time_grid, freq_grid, power, times, frequencies):
     img = Image.open(buf).convert('L')
     # Convert image to a numpy array
     img_arr = np.array(img)
-    # Optionally resize or process the image array here
-    # Convert numpy array to tensor
     img_tensor = torch.tensor(img_arr, dtype=torch.float32)
     return img_tensor
 
