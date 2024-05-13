@@ -38,9 +38,9 @@ class SpectrogramDataset(Dataset):
         return img, label
 
 # Path to the folder containing your spectrograms
-spectro_folder = Path('./spectrograms')
+# spectro_folder = Path('./spectrograms')
 #If on HPC
-# spectro_folder = Path('')
+spectro_folder = Path('/zhome/09/8/169747/Bachelor_Thesis/spectrograms')
 
 # Create a custom dataset
 Data = SpectrogramDataset(spectro_folder)
